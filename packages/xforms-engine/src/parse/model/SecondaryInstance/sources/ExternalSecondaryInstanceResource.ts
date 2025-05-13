@@ -8,11 +8,9 @@ import {
 } from '../../../attachments/FormAttachmentResource.ts';
 import type { ExternalSecondaryInstanceSourceFormat } from './SecondaryInstanceSource.ts';
 
-interface ExternalSecondaryInstanceResourceMetadata<
-	Format extends ExternalSecondaryInstanceSourceFormat = ExternalSecondaryInstanceSourceFormat,
-> {
+interface ExternalSecondaryInstanceResourceMetadata {
 	readonly contentType: string;
-	readonly format: Format;
+	readonly format: ExternalSecondaryInstanceSourceFormat;
 }
 
 const inferSecondaryInstanceResourceMetadata = (
@@ -87,9 +85,7 @@ interface ExternalSecondaryInstanceResourceOptions {
 	readonly isExplicitlyBlank?: boolean;
 }
 
-export class ExternalSecondaryInstanceResource<
-	Format extends ExternalSecondaryInstanceSourceFormat = ExternalSecondaryInstanceSourceFormat,
-> extends FormAttachmentResource<'secondary-instance'> {
+export class ExternalSecondaryInstanceResource extends FormAttachmentResource<'secondary-instance'> {
 	static async load(
 		instanceId: string,
 		resourceURL: JRResourceURL,
@@ -129,14 +125,14 @@ export class ExternalSecondaryInstanceResource<
 		);
 	}
 
-	readonly format: Format;
+	readonly format: ExternalSecondaryInstanceSourceFormat;
 	readonly isBlank: boolean;
 
 	private constructor(
 		readonly responseStatus: number | null,
 		readonly instanceId: string,
 		resourceURL: JRResourceURL,
-		metadata: ExternalSecondaryInstanceResourceMetadata<Format>,
+		metadata: ExternalSecondaryInstanceResourceMetadata<ExternalSecondaryInstanceSourceFormat>,
 		data: string,
 		options: ExternalSecondaryInstanceResourceOptions
 	) {
